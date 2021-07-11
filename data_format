@@ -1,0 +1,17 @@
+key
+yyyy-mm-dd-hh-mm-ss     2018-12-19-10-52-33
+value
+type-jar-repeat-desc-amount    Expense-Necessities-Once-fiesta_fuel-500000
+
+special key for break-out transaction
+yyyy-mm-dd-hh-mm-ss-jar     2018-12-19-10-52-33-Necessities
+
+repeat transaction
+yyyy-mm-dd-hh-mm-ss-repeat
+
+
+buildpacks 1.7.6 is the latest python buildpacks that support python 2.7.x
+cf push 6jars -m 64M -b https://github.com/cloudfoundry/python-buildpack.git#v1.7.6
+
+https://docs.cloudfoundry.org/buildpacks/python/index.html
+https://github.com/cloudfoundry/python-buildpack/releases

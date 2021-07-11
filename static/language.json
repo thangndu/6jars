@@ -1,0 +1,291 @@
+{
+    "English": 
+        {
+            "dashboard_page":
+            {
+                "title_caption": "Dashboard",
+                "nec_caption": "Neccessities",
+                "edu_caption": "Education",
+                "lts_caption": "Saving",
+                "ply_caption": "Play",
+                "ffa_caption": "Investment",
+                "giv_caption": "Give",
+                "balance_caption": "Balance",
+                "income_caption": "Income",
+                "expense_caption": "Expense"
+            },
+            "transaction_page":
+            {
+                "title_caption": "Transaction",
+                "expense_caption": "Expense",
+                "income_caption": "Income",
+                "amount_title_caption": "Enter the amount",
+                "amount_caption": "Amount",
+                "all_caption": "All jars",
+                "nec_caption": "Neccessities",
+                "edu_caption": "Education",
+                "lts_caption": "Saving",
+                "ply_caption": "Play",
+                "ffa_caption": "Investment",
+                "giv_caption": "Give",
+                "once_caption": "Once",
+                "daily_caption": "Daily",
+                "weekly_caption": "Weekly",
+                "monthly_caption": "Monthly",
+                "annually_caption": "Annually",
+                "description_caption": "Description",
+                "msg_successful_caption": "Save successfully",
+                "msg_amount_caption": "Please enter the amount",
+                "msg_over_caption": "You should not overspend jar's amount",
+                "save_caption": "Save",
+                "back_caption": "Back"
+            },
+            "history_page":
+            {
+                "title_caption": "History",
+                "all_caption": "All jars",
+                "nec_caption": "Neccessities",
+                "edu_caption": "Education",
+                "lts_caption": "Saving",
+                "ply_caption": "Play",
+                "ffa_caption": "Investment",
+                "giv_caption": "Give",
+                "balance_caption": "Balance",
+                "income_caption": "Income",
+                "expense_caption": "Expense",
+                "back_caption": "Back"
+            },
+            "report_page":
+            {
+                "title_caption": "Report",
+                "week_caption": "Week",
+                "income_caption": "Income",
+                "expense_caption": "Expense",
+                "balance_caption": "Balance",
+                "back_caption": "Back"
+            },
+            "settings_page":
+            {
+                "title_caption": "Settings",
+                "general_setting_caption": "General setting",
+                "jar_setting_caption": "Jars setting",
+                "recurring_transaction_caption": "Recurring transactions",
+                "guide_caption":"Guide",
+                "fanpage_caption":"Facebook fanpage",
+                "feedback_caption":"Feedback",
+                "back_caption": "Back"
+            },
+            "general_setting_page":
+            {
+                "title_caption": "General setting",
+                "language_caption": "Lanugage",
+                "currency_caption": "Currency",
+                "factory_reset_caption": "Factory reset",
+                "version_caption": "Version: 1.0",
+                "back_caption": "Back"
+            },
+            "jar_setting_page":
+            {
+                "title_caption": "Jars setting",
+                "total_caption": "Total:",
+                "nec_caption": "Neccessities",
+                "edu_caption": "Education",
+                "lts_caption": "Saving",
+                "ply_caption": "Play",
+                "ffa_caption": "Investment",
+                "giv_caption": "Give",
+                "save_caption": "Save",
+                "back_caption": "Back"
+            },
+            "recurring_transaction_page":
+            {
+                "title_caption": "Recurring transactions",
+                "all_caption": "All Jars",
+                "nec_caption": "Neccessities",
+                "edu_caption": "Education",
+                "lts_caption": "Saving",
+                "ply_caption": "Play",
+                "ffa_caption": "Investment",
+                "giv_caption": "Give",
+                "back_caption": "Back"
+            },
+            "language_page":
+            {
+                "title_caption": "Language",
+                "save_caption": "Save",
+                "back_caption": "Back"
+            },
+            "currency_page":
+            {
+                "title_caption": "Currency",
+                "save_caption": "Save",
+                "back_caption": "Back"
+            },
+            "factory_reset_page":
+            {
+                "title_caption": "Factory reset",
+                "note_caption": "If you choose RESET, all your records will be deleted.",
+                "step1_caption": "Step 1: Enter \"CONFIRM\"",
+                "step2_caption": "Step 2: Click the RESET button",
+                "reset_caption": "RESET",
+                "back_caption": "Back"
+            },
+            "select_jar_page":
+            {
+                "title_caption": "Jars",
+                "all_caption": "All jars",
+                "nec_caption": "Neccessities",
+                "edu_caption": "Education",
+                "lts_caption": "Saving",
+                "ply_caption": "Play",
+                "ffa_caption": "Investment",
+                "giv_caption": "Give",
+                "back_caption": "Back"
+            }
+        },
+    "Vietnamese": 
+    {
+        "dashboard_page":
+        {
+            "title_caption": "Tổng quan",
+            "nec_caption": "Thiết yếu",
+            "edu_caption": "Giáo dục",
+            "lts_caption": "Tiết kiệm",
+            "ply_caption": "Hưởng thụ",
+            "ffa_caption": "Đầu tư",
+            "giv_caption": "Thiện tâm",
+            "balance_caption": "Số dư khả dụng",
+            "income_caption": "Thu nhập",
+            "expense_caption": "Chi tiêu"
+        },
+        "transaction_page":
+        {
+            "title_caption": "Giao dịch",
+            "expense_caption": "Chi tiêu",
+            "income_caption": "Thu nhập",
+            "amount_title_caption": "Nhập số tiền",
+            "amount_caption": "Số tiền",
+            "all_caption": "Tất cả",
+            "nec_caption": "Thiết yếu",
+            "edu_caption": "Giáo dục",
+            "lts_caption": "Tiết kiệm",
+            "ply_caption": "Hưởng thụ",
+            "ffa_caption": "Đầu tư",
+            "giv_caption": "Thiện tâm",
+            "once_caption": "Một lần",
+            "daily_caption": "Hàng ngày",
+            "weekly_caption": "Hàng tuần",
+            "monthly_caption": "Hàng tháng",
+            "annually_caption": "Hàng năm",
+            "description_caption": "Mô tả",
+            "msg_successful_caption": "Lưu thành công",
+            "msg_amount_caption": "Vui lòng nhập số tiền",
+            "msg_over_caption": "Không chi tiêu quá số tiền trong hũ",
+            "save_caption": "Lưu",
+            "back_caption": "Quay lại"
+        },
+        "history_page":
+        {
+            "title_caption": "Lịch sử giao dịch",
+            "all_caption": "Tất cả",
+            "nec_caption": "Thiết yếu",
+            "edu_caption": "Giáo dục",
+            "lts_caption": "Tiết kiệm",
+            "ply_caption": "Hưởng thụ",
+            "ffa_caption": "Đầu tư",
+            "giv_caption": "Thiện tâm",
+            "balance_caption": "Số dư khả dụng",
+            "income_caption": "Thu nhập",
+            "expense_caption": "Chi tiêu",
+            "back_caption": "Quay lại"
+        },
+        "report_page":
+        {
+            "title_caption": "Báo cáo",
+            "week_caption": "Tuần",
+            "balance_caption": "Số dư khả dụng",
+            "income_caption": "Thu nhập",
+            "expense_caption": "Chi tiêu",
+            "back_caption": "Quay lại"
+        },
+        "settings_page":
+        {
+            "title_caption": "Thiết lập",
+            "general_setting_caption": "Thiết lập chung",
+            "jar_setting_caption": "Thiết lập các hũ",
+            "recurring_transaction_caption": "Giao dịch định kỳ",
+            "guide_caption":"Hướng dẫn",
+            "fanpage_caption":"Facebook fanpage",
+            "feedback_caption":"Phản hồi",
+            "back_caption": "Quay lại"
+        },
+        "general_setting_page":
+        {
+            "title_caption": "Thiết lập chung",
+            "language_caption": "Ngôn ngữ",
+            "currency_caption": "Tiền tệ",
+            "factory_reset_caption": "Thiết lập ban đầu",
+            "version_caption": "Phiên bản: 1.0",
+            "back_caption": "Quay lại"
+        },
+        "jar_setting_page":
+        {
+            "title_caption": "Thiết lập các hũ",
+            "total_caption": "Tổng:",
+            "nec_caption": "Thiết yếu",
+            "edu_caption": "Giáo dục",
+            "lts_caption": "Tiết kiệm",
+            "ply_caption": "Hưởng thụ",
+            "ffa_caption": "Đầu tư",
+            "giv_caption": "Thiện tâm",
+            "save_caption": "Lưu",
+            "back_caption": "Quay lại"
+        },
+        "recurring_transaction_page":
+        {
+            "title_caption": "Giao dịch định kỳ",
+            "all_caption": "Tất cả",
+            "nec_caption": "Thiết yếu",
+            "edu_caption": "Giáo dục",
+            "lts_caption": "Tiết kiệm",
+            "ply_caption": "Hưởng thụ",
+            "ffa_caption": "Đầu tư",
+            "giv_caption": "Thiện tâm",
+            "back_caption": "Quay lại"
+        },
+        "language_page":
+        {
+            "title_caption": "Ngôn ngữ",
+            "save_caption": "Lưu",
+            "back_caption": "Quay lại"
+        },
+        "currency_page":
+        {
+            "title_caption": "Tiền tệ",
+            "save_caption": "Lưu",
+            "back_caption": "Quay lại"
+        },
+        "factory_reset_page":
+        {
+            "title_caption": "Thiết lập ban đầu",
+            "note_caption": "Nếu bạn chọn XOÁ, tất cả giao dịch của bạn sẽ bị xoá.",
+            "step1_caption": "Bước 1: Nhập \"CONFIRM\"",
+            "step2_caption": "Bước 2: Nhấn vào nút XOÁ",
+            "reset_caption": "XOÁ",
+            "back_caption": "Quay lại"
+        },
+        "select_jar_page":
+        {
+            "title_caption": "Lựa chọn hũ",
+            "all_caption": "Tất cả",
+            "nec_caption": "Thiết yếu",
+            "edu_caption": "Giáo dục",
+            "lts_caption": "Tiết kiệm",
+            "ply_caption": "Hưởng thụ",
+            "ffa_caption": "Đầu tư",
+            "giv_caption": "Thiện tâm",
+            "back_caption": "Quay lại"
+        }
+    }
+        
+  }
