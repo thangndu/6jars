@@ -72,7 +72,7 @@ def WelcomePage():
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi - Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,6jars,app,money,method,management,cloud,native,application">
         <meta name="google-signin-client_id" content="955627858473-0arlet02drea1vfrn2rtndg6d430qdib.apps.googleusercontent.com">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -230,7 +230,7 @@ def WelcomePage():
                 &copy 2019 MoneyOi.
                 <a href="https://moneyoi.io/blogs/moneyoi-quan-ly-6-hu-en/moneyoi-app-privacy-policy" style="color:white; text-decoration: underline;">Privacy Policy</a>
                 <br>
-                <span style="color:TURQUOISE">Powered by Heroku Application Platform</span>
+                <span style="color:TURQUOISE">Powered by Google AppEngine Platform</span>
             </p>
         </label>
     </div>
@@ -276,7 +276,7 @@ def WelcomePage():
 
         }
 
-        
+
 
         function onFailure(error) {
             console.log(error);
@@ -380,7 +380,6 @@ def WelcomePage():
 @app.route('/HomePage/<user_id>/<today>', methods=['POST'])
 def HomePage(user_id, today):
     
-
     pre_balance = 0
     nec_prebal = 0
     edu_prebal = 0
@@ -451,8 +450,8 @@ def HomePage(user_id, today):
     current_date = dateString[0]+'-'+dateString[1]
     
 
-    print "HomePage:today:"+today 
-    print "HomePage:user_id:"+user_id 
+    print("HomePage:today:"+today) 
+    print("HomePage:user_id:"+user_id) 
 
 
     sender_id = request.form['sender_id']
@@ -463,7 +462,7 @@ def HomePage(user_id, today):
 
     # check whether if user_id exists or not
     if (r.hexists(user_id, "currency") == False): 
-        print "HomePage:Account not exist"
+        print("HomePage:Account not exist")
         
         r.hmset(user_id,{
                 'nec_pct':nec_pct,
@@ -501,7 +500,7 @@ def HomePage(user_id, today):
             })
 
     else:
-        print "HomePage:Account exist"
+        print("HomePage:Account exist")
 
         user_dict = r.hmget(user_id,
                             'income_amt',
@@ -531,10 +530,10 @@ def HomePage(user_id, today):
                             'user_email',
                             'user_login')
 
-        language = user_dict[23]
-        currency = user_dict[2]
-        user_email = user_dict[24]
-        user_login = user_dict[25]
+        language = user_dict[23].decode('UTF-8')
+        currency = user_dict[2].decode('UTF-8')
+        user_email = user_dict[24].decode('UTF-8')
+        user_login = user_dict[25].decode('UTF-8')
         
         income_amt = int(float(user_dict[0]))
         expense_amt = int(float(user_dict[1]))
@@ -572,11 +571,11 @@ def HomePage(user_id, today):
         ffa_balance = ffa_income - ffa_expense + ffa_prebal
         giv_balance = giv_income - giv_expense + giv_prebal
 
-        pre_date = user_dict[22]
+        pre_date = user_dict[22].decode('UTF-8')
 
         # if next month ?
         if (current_date != pre_date):
-            print "HomePage:New month"
+            print("HomePage:New month")
             #reset income/expense value, carry forward balance to next month
             income_amt = 0
             expense_amt = 0
@@ -633,17 +632,19 @@ def HomePage(user_id, today):
         # look for repeat transaction
         for key in r.hscan_iter(user_id, match='*repeat'):
             
-            
-            transactionID = key[0].replace('-repeat','')
-            transactionValue = key[1]
+
+            transactionID = key[0].decode('UTF-8').replace('-repeat','')
+            transactionValue = key[1].decode('UTF-8')
 
             bRepeat = False
 
-            key0 = key[0].split('-')
-            key1 = key[1].split('-')
+            key0 = key[0].decode('UTF-8').split('-')
+            key1 = key[1].decode('UTF-8').split('-')
 
-            repeat = key1[2]
+            repeat = key1[2]           
+
             transaction_date = transactionDate = datetime.date(int(key0[0]), int(key0[1]), int(key0[2]))
+
 
             if (repeat == DAILY):
                 while (transactionDate <= currentDate):
@@ -681,10 +682,10 @@ def HomePage(user_id, today):
 
         # calculate percentage for HomePage
         if (balance_amt > 0):
-            percentage = int(float(balance_amt)/(balance_amt+expense_amt)*100)
+            percentage = int(balance_amt/(balance_amt+expense_amt)*100)
 
         if (nec_balance > 0):
-            nec_progress = int(float(nec_balance)/(nec_balance+nec_expense)*100)
+            nec_progress = int(nec_balance/(nec_balance+nec_expense)*100)
             
             if (nec_progress >= 50):
                 nec_progress_color = "TURQUOISE"
@@ -694,7 +695,7 @@ def HomePage(user_id, today):
                 nec_progress_color = "TOMATO"       
 
         if (edu_balance > 0):
-            edu_progress = int(float(edu_balance)/(edu_balance+edu_expense)*100)
+            edu_progress = int(edu_balance/(edu_balance+edu_expense)*100)
 
             if (edu_progress >= 50):
                 edu_progress_color = "TURQUOISE"
@@ -705,7 +706,7 @@ def HomePage(user_id, today):
  
 
         if (lts_balance > 0):
-            lts_progress = int(float(lts_balance)/(lts_balance+lts_expense)*100)
+            lts_progress = int(lts_balance/(lts_balance+lts_expense)*100)
 
             if (lts_progress >= 50):
                 lts_progress_color = "TURQUOISE"
@@ -716,7 +717,7 @@ def HomePage(user_id, today):
  
 
         if (ply_balance > 0):
-            ply_progress = int(float(ply_balance)/(ply_balance+ply_expense)*100)
+            ply_progress = int(ply_balance/(ply_balance+ply_expense)*100)
 
             if (ply_progress >= 50):
                 ply_progress_color = "TURQUOISE"
@@ -727,7 +728,7 @@ def HomePage(user_id, today):
  
 
         if (ffa_balance > 0):
-            ffa_progress = int(float(ffa_balance)/(ffa_balance+ffa_expense)*100)
+            ffa_progress = int(ffa_balance/(ffa_balance+ffa_expense)*100)
 
             if (ffa_progress >= 50):
                 ffa_progress_color = "TURQUOISE"
@@ -738,7 +739,7 @@ def HomePage(user_id, today):
  
 
         if (giv_balance > 0):
-            giv_progress = int(float(giv_balance)/(giv_balance+giv_expense)*100)
+            giv_progress = int(giv_balance/(giv_balance+giv_expense)*100)
 
             if (giv_progress >= 50):
                 giv_progress_color = "TURQUOISE"
@@ -749,24 +750,26 @@ def HomePage(user_id, today):
  
     
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
     #load currency json file
-    with open('static/currency.json') as f:
+    with open('static/currency.json','rb') as f:
         currency_data = json.load(f)
   
 
-    title_caption=language_data[language]['dashboard_page']['title_caption'].encode('utf-8')
-    nec_caption=language_data[language]['dashboard_page']['nec_caption'].encode('utf-8')
-    edu_caption=language_data[language]['dashboard_page']['edu_caption'].encode('utf-8')
-    lts_caption=language_data[language]['dashboard_page']['lts_caption'].encode('utf-8')
-    ply_caption=language_data[language]['dashboard_page']['ply_caption'].encode('utf-8')
-    ffa_caption=language_data[language]['dashboard_page']['ffa_caption'].encode('utf-8')
-    giv_caption=language_data[language]['dashboard_page']['giv_caption'].encode('utf-8')
-    balance_caption=language_data[language]['dashboard_page']['balance_caption'].encode('utf-8')
-    income_caption=language_data[language]['dashboard_page']['income_caption'].encode('utf-8')
-    expense_caption=language_data[language]['dashboard_page']['expense_caption'].encode('utf-8')
+    title_caption=language_data[language]['dashboard_page']['title_caption']
+    nec_caption=language_data[language]['dashboard_page']['nec_caption']
+    edu_caption=language_data[language]['dashboard_page']['edu_caption']
+    lts_caption=language_data[language]['dashboard_page']['lts_caption']
+    ply_caption=language_data[language]['dashboard_page']['ply_caption']
+    ffa_caption=language_data[language]['dashboard_page']['ffa_caption']
+    giv_caption=language_data[language]['dashboard_page']['giv_caption']
+    balance_caption=language_data[language]['dashboard_page']['balance_caption']
+    income_caption=language_data[language]['dashboard_page']['income_caption']
+    expense_caption=language_data[language]['dashboard_page']['expense_caption']
+
+    currency_sign = CURRENCY_VND
 
     for i in range(0,len(currency_data['currency'])):
         currency_code = currency_data['currency'][i]['currency_code']
@@ -781,7 +784,7 @@ def HomePage(user_id, today):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -838,23 +841,24 @@ def HomePage(user_id, today):
     }
     """
 
-    if (user_login == 'google'):
+    # user_login == 'google'
 
-        signOut_function = """
-        function signOut() {
+    signOut_function = """
+    function signOut() {
 
-            document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://moneyoi.herokuapp.com";
+        document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://moneyoi.appspot.com";
 
-        };
+    };
         """
-    elif (user_login == 'facebook'):
+    # user_login == 'facebook'
+    if (user_login == 'facebook'):
         signOut_function = """
         function signOut() {
             
             FB.logout(function(response) {
                 // Logout and redirect to the home page
 
-                document.location.href = "https://moneyoi.herokuapp.com";
+                document.location.href = "https://moneyoi.appspot.com";
                     
             });
            
@@ -1464,8 +1468,8 @@ def TransactionPage(user_id):
     
     transactionType = request.form['transactionType']
 
-    print "TransactionPage:user_id:"+user_id
-    print "TransactionPage:transactionType:"+transactionType
+    print("TransactionPage:user_id:"+user_id)
+    print("TransactionPage:transactionType:"+transactionType)
 
 
     initValue = """
@@ -1499,16 +1503,16 @@ def TransactionPage(user_id):
                         'giv_prebal',
                         'language')
 
-    currency = user_dict[0]
-    language = user_dict[19]
+    currency = user_dict[0].decode('UTF-8')
+    language = user_dict[19].decode('UTF-8')
 
     
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
     
     #load currency json file
-    with open('static/currency.json') as f:
+    with open('static/currency.json','rb') as f:
         currency_data = json.load(f)
 
 
@@ -1536,6 +1540,7 @@ def TransactionPage(user_id):
     save_caption=language_data[language]['transaction_page']['save_caption']
     back_caption=language_data[language]['transaction_page']['back_caption']
 
+    currency_sign = CURRENCY_VND
 
     for i in range(0,len(currency_data['currency'])):
         currency_code = currency_data['currency'][i]['currency_code']
@@ -1603,10 +1608,10 @@ def TransactionPage(user_id):
             date = request.form['date']
 
 
-            print "TransactionPage:transactionID:"+transactionID
-            print "TransactionPage:transactionValue:"+transactionValue.encode('utf-8')
-            print "TransactionPage:jarOption:"+jarOption
-            print "TransactionPage:date:"+date
+            print("TransactionPage:transactionID:"+transactionID)
+            print("TransactionPage:transactionValue:"+transactionValue)
+            print("TransactionPage:jarOption:"+jarOption)
+            print("TransactionPage:date:"+date)
 
             key = transactionID.split('-')
             value = transactionValue.split('-')
@@ -1640,7 +1645,7 @@ def TransactionPage(user_id):
             jar_option = JAR_OPTION[jar]
             repeat_type = REPEAT_TYPE[repeat]
             
-            initValue = all_option + u"""
+            initValue = all_option + """
                 var sign_symbol = document.getElementById('sign-symbol');       
                 sign_symbol.setAttribute("class", "{sign_symbol}");
                 sign_symbol.style.color = "{color}";
@@ -1673,8 +1678,8 @@ def TransactionPage(user_id):
             jarOption = request.form['jarOption']
             date = request.form['date']
 
-            print "TransactionPage:jarOption:"+jarOption
-            print "TransactionPage:date:"+date
+            print("TransactionPage:jarOption:"+jarOption)
+            print("TransactionPage:date:"+date)
 
             jar_option = JAR_OPTION[jarOption]
 
@@ -1723,7 +1728,7 @@ def TransactionPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -2065,7 +2070,7 @@ def TransactionPage(user_id):
 
     """
 
-    mid_html = u"""
+    mid_html = """
     
     <style>
         /*------ addtransaction style ---------*/
@@ -2280,9 +2285,9 @@ def TransactionPage(user_id):
 @app.route('/HistoryPage/<user_id>/<historyType>/<historyDate>', methods=['POST'])
 def HistoryPage(user_id, historyType, historyDate):
     
-    print "HistoryPage:user_id:"+user_id
-    print "HistoryPage:historyType:"+historyType
-    print "HistoryPage:historyDate:"+historyDate
+    print("HistoryPage:user_id:"+user_id)
+    print("HistoryPage:historyType:"+historyType)
+    print("HistoryPage:historyDate:"+historyDate)
 
 
     table_begin = """
@@ -2334,29 +2339,31 @@ def HistoryPage(user_id, historyType, historyDate):
                         'language')
 
     
-    currency = user_dict[18]
-    language = user_dict[19]
+    currency = user_dict[18].decode('UTF-8')
+    language = user_dict[19].decode('UTF-8')
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
     
     #load currency json file
-    with open('static/currency.json') as f:
+    with open('static/currency.json','rb') as f:
         currency_data = json.load(f)
 
-    title_caption=language_data[language]['history_page']['title_caption'].encode('utf-8')
-    all_caption=language_data[language]['history_page']['all_caption'].encode('utf-8')
-    nec_caption=language_data[language]['history_page']['nec_caption'].encode('utf-8')
-    edu_caption=language_data[language]['history_page']['edu_caption'].encode('utf-8')
-    lts_caption=language_data[language]['history_page']['lts_caption'].encode('utf-8')
-    ply_caption=language_data[language]['history_page']['ply_caption'].encode('utf-8')
-    ffa_caption=language_data[language]['history_page']['ffa_caption'].encode('utf-8')
-    giv_caption=language_data[language]['history_page']['giv_caption'].encode('utf-8')
-    balance_caption=language_data[language]['history_page']['balance_caption'].encode('utf-8')
-    income_caption=language_data[language]['history_page']['income_caption'].encode('utf-8')
-    expense_caption=language_data[language]['history_page']['expense_caption'].encode('utf-8')
-    back_caption=language_data[language]['history_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['history_page']['title_caption']
+    all_caption=language_data[language]['history_page']['all_caption']
+    nec_caption=language_data[language]['history_page']['nec_caption']
+    edu_caption=language_data[language]['history_page']['edu_caption']
+    lts_caption=language_data[language]['history_page']['lts_caption']
+    ply_caption=language_data[language]['history_page']['ply_caption']
+    ffa_caption=language_data[language]['history_page']['ffa_caption']
+    giv_caption=language_data[language]['history_page']['giv_caption']
+    balance_caption=language_data[language]['history_page']['balance_caption']
+    income_caption=language_data[language]['history_page']['income_caption']
+    expense_caption=language_data[language]['history_page']['expense_caption']
+    back_caption=language_data[language]['history_page']['back_caption']
+
+    currency_sign = CURRENCY_VND
 
     for i in range(0,len(currency_data['currency'])):
         currency_code = currency_data['currency'][i]['currency_code']
@@ -2407,7 +2414,7 @@ def HistoryPage(user_id, historyType, historyDate):
             jar_url = "/static/nec.png"
 
             if (nec_balance > 0):
-                progress = int(float(nec_balance)/(nec_balance+nec_expense)*100)
+                progress = int(nec_balance/(nec_balance+nec_expense)*100)
 
         if (historyType == EDU):
 
@@ -2420,7 +2427,7 @@ def HistoryPage(user_id, historyType, historyDate):
             jar_url = "/static/edu.png"  
 
             if (edu_balance > 0):
-                progress = int(float(edu_balance)/(edu_balance+edu_expense)*100)
+                progress = int(edu_balance/(edu_balance+edu_expense)*100)
 
         if (historyType == LTS):
 
@@ -2433,7 +2440,7 @@ def HistoryPage(user_id, historyType, historyDate):
             jar_url = "/static/lts.png"
 
             if (lts_balance > 0):
-                progress = int(float(lts_balance)/(lts_balance+lts_expense)*100)
+                progress = int(lts_balance/(lts_balance+lts_expense)*100)
 
         if (historyType == PLY):
 
@@ -2446,7 +2453,7 @@ def HistoryPage(user_id, historyType, historyDate):
             jar_url = "/static/ply.png" 
 
             if (ply_balance > 0):
-                progress = int(float(ply_balance)/(ply_balance+ply_expense)*100)
+                progress = int(ply_balance/(ply_balance+ply_expense)*100)
 
         if (historyType == FFA):
 
@@ -2459,7 +2466,7 @@ def HistoryPage(user_id, historyType, historyDate):
             jar_url = "/static/ffa.png" 
 
             if (ffa_balance > 0):
-                progress = int(float(ffa_balance)/(ffa_balance+ffa_expense)*100)
+                progress = int(ffa_balance/(ffa_balance+ffa_expense)*100)
 
         if (historyType == GIV):
 
@@ -2472,7 +2479,7 @@ def HistoryPage(user_id, historyType, historyDate):
             jar_url = "/static/giv.png" 
 
             if (giv_balance > 0):
-                progress = int(float(giv_balance)/(giv_balance+giv_expense)*100)
+                progress = int(giv_balance/(giv_balance+giv_expense)*100)
 
         if (progress >= 50):
             progress_color = "TURQUOISE"
@@ -2488,11 +2495,11 @@ def HistoryPage(user_id, historyType, historyDate):
 
     for key in sorted(r.hscan_iter(user_id, match=historyDate+'*'), reverse=True):
 
-        transactionID = key[0]
-        transactionValue = key[1].replace("&","#")
+        transactionID = key[0].decode('UTF-8')
+        transactionValue = key[1].decode('UTF-8').replace("&","#")
 
-        key0 = key[0].split('-')
-        key1 = key[1].split('-')
+        key0 = key[0].decode('UTF-8').split('-')
+        key1 = key[1].decode('UTF-8').split('-')
         
 
         year = key0[0]
@@ -2526,12 +2533,12 @@ def HistoryPage(user_id, historyType, historyDate):
                                 transactionID+'-'+FFA,
                                 transactionID+'-'+GIV)
 
-            nec_amount = user_dict1[0].split('-')[4]
-            edu_amount = user_dict1[1].split('-')[4]
-            lts_amount = user_dict1[2].split('-')[4]
-            ply_amount = user_dict1[3].split('-')[4]
-            ffa_amount = user_dict1[4].split('-')[4]
-            giv_amount = user_dict1[5].split('-')[4]
+            nec_amount = user_dict1[0].decode('UTF-8').split('-')[4]
+            edu_amount = user_dict1[1].decode('UTF-8').split('-')[4]
+            lts_amount = user_dict1[2].decode('UTF-8').split('-')[4]
+            ply_amount = user_dict1[3].decode('UTF-8').split('-')[4]
+            ffa_amount = user_dict1[4].decode('UTF-8').split('-')[4]
+            giv_amount = user_dict1[5].decode('UTF-8').split('-')[4]
 
 
         trash_symbol = """
@@ -2802,7 +2809,7 @@ def HistoryPage(user_id, historyType, historyDate):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -3099,9 +3106,9 @@ def HistoryPage(user_id, historyType, historyDate):
 @app.route('/ReportPage/<user_id>/<reportType>/<reportDate>', methods=['POST'])
 def ReportPage(user_id, reportType, reportDate):
     
-    print "ReportPage:user_id:"+user_id
-    print "ReportPage:reportType:"+reportType
-    print "ReportPage:reportDate:"+reportDate
+    print("ReportPage:user_id:"+user_id)
+    print("ReportPage:reportType:"+reportType)
+    print("ReportPage:reportDate:"+reportDate)
 
     income_amt = 0
     expense_amt = 0
@@ -3136,23 +3143,25 @@ def ReportPage(user_id, reportType, reportDate):
                         'pre_balance',
                         'language')
 
-    currency = user_dict[18]
-    language = user_dict[22]
+    currency = user_dict[18].decode('UTF-8')
+    language = user_dict[22].decode('UTF-8')
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
     #load currency json file
-    with open('static/currency.json') as f:
+    with open('static/currency.json','rb') as f:
         currency_data = json.load(f)
 
-    title_caption=language_data[language]['report_page']['title_caption'].encode('utf-8')
-    week_caption=language_data[language]['report_page']['week_caption'].encode('utf-8')
-    balance_caption=language_data[language]['report_page']['balance_caption'].encode('utf-8')
-    income_caption=language_data[language]['report_page']['income_caption'].encode('utf-8')
-    expense_caption=language_data[language]['report_page']['expense_caption'].encode('utf-8')
-    back_caption=language_data[language]['report_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['report_page']['title_caption']
+    week_caption=language_data[language]['report_page']['week_caption']
+    balance_caption=language_data[language]['report_page']['balance_caption']
+    income_caption=language_data[language]['report_page']['income_caption']
+    expense_caption=language_data[language]['report_page']['expense_caption']
+    back_caption=language_data[language]['report_page']['back_caption']
+
+    currency_sign = CURRENCY_VND
 
     for i in range(0,len(currency_data['currency'])):
         currency_code = currency_data['currency'][i]['currency_code']
@@ -3199,7 +3208,7 @@ def ReportPage(user_id, reportType, reportDate):
     if (reportType == ALL):
 
         if (balance_amt > 0):
-             progress = int(float(balance_amt)/(balance_amt+expense_amt)*100)
+             progress = int(balance_amt/(balance_amt+expense_amt)*100)
 
         income_amt = "{:,}".format(income_amt)
         expense_amt = "{:,}".format(expense_amt)
@@ -3217,7 +3226,7 @@ def ReportPage(user_id, reportType, reportDate):
         jar_url = "/static/nec.png"
 
         if (nec_balance > 0):
-             progress = int(float(nec_balance)/(nec_balance+nec_expense)*100)
+             progress = int(nec_balance/(nec_balance+nec_expense)*100)
 
     if (reportType == EDU):
 
@@ -3228,7 +3237,7 @@ def ReportPage(user_id, reportType, reportDate):
         jar_url = "/static/edu.png"  
 
         if (edu_balance > 0):
-            progress = int(float(edu_balance)/(edu_balance+edu_expense)*100)
+            progress = int(edu_balance/(edu_balance+edu_expense)*100)
 
     if (reportType == LTS):
 
@@ -3239,7 +3248,7 @@ def ReportPage(user_id, reportType, reportDate):
         jar_url = "/static/lts.png"
 
         if (lts_balance > 0):
-            progress = int(float(lts_balance)/(lts_balance+lts_expense)*100)
+            progress = int(lts_balance/(lts_balance+lts_expense)*100)
 
     if (reportType == PLY):
 
@@ -3250,7 +3259,7 @@ def ReportPage(user_id, reportType, reportDate):
         jar_url = "/static/ply.png" 
 
         if (ply_balance > 0):
-            progress = int(float(ply_balance)/(ply_balance+ply_expense)*100)
+            progress = int(ply_balance/(ply_balance+ply_expense)*100)
 
     if (reportType == FFA):
 
@@ -3261,7 +3270,7 @@ def ReportPage(user_id, reportType, reportDate):
         jar_url = "/static/ffa.png" 
 
         if (ffa_balance > 0):
-            progress = int(float(ffa_balance)/(ffa_balance+ffa_expense)*100)
+            progress = int(ffa_balance/(ffa_balance+ffa_expense)*100)
 
     if (reportType == GIV):
 
@@ -3272,7 +3281,7 @@ def ReportPage(user_id, reportType, reportDate):
         jar_url = "/static/giv.png" 
 
         if (giv_balance > 0):
-            progress = int(float(giv_balance)/(giv_balance+giv_expense)*100)
+            progress = int(giv_balance/(giv_balance+giv_expense)*100)
 
 
 
@@ -3288,8 +3297,8 @@ def ReportPage(user_id, reportType, reportDate):
     week_expense_amt = [0,0,0,0]
 
     for key in r.hscan_iter(user_id, match=reportDate+'*'):
-        key0 = key[0].split('-')
-        key1 = key[1].split('-')
+        key0 = key[0].decode('UTF-8').split('-')
+        key1 = key[1].decode('UTF-8').split('-')
 
         ttype = key1[0]
         jar = key1[1]
@@ -3495,7 +3504,7 @@ def ReportPage(user_id, reportType, reportDate):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -3804,24 +3813,24 @@ def ReportPage(user_id, reportType, reportDate):
 def SettingPage(user_id):
     
 
-    print "SettingPage:user_id:"+user_id
+    print("SettingPage:user_id:"+user_id)
 
-    language = r.hget(user_id,'language')
+    language = r.hget(user_id,'language').decode('UTF-8')
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
 
-    title_caption=language_data[language]['settings_page']['title_caption'].encode('utf-8')
-    general_setting_caption=language_data[language]['settings_page']['general_setting_caption'].encode('utf-8')
-    jar_setting_caption=language_data[language]['settings_page']['jar_setting_caption'].encode('utf-8')
-    recurring_transaction_caption=language_data[language]['settings_page']['recurring_transaction_caption'].encode('utf-8')
-    guide_caption=language_data[language]['settings_page']['guide_caption'].encode('utf-8')
-    fanpage_caption=language_data[language]['settings_page']['fanpage_caption'].encode('utf-8')
-    feedback_caption=language_data[language]['settings_page']['feedback_caption'].encode('utf-8')
-    back_caption=language_data[language]['settings_page']['back_caption'].encode('utf-8')
-    version_caption=language_data[language]['general_setting_page']['version_caption'].encode('utf-8')
+    title_caption=language_data[language]['settings_page']['title_caption']
+    general_setting_caption=language_data[language]['settings_page']['general_setting_caption']
+    jar_setting_caption=language_data[language]['settings_page']['jar_setting_caption']
+    recurring_transaction_caption=language_data[language]['settings_page']['recurring_transaction_caption']
+    guide_caption=language_data[language]['settings_page']['guide_caption']
+    fanpage_caption=language_data[language]['settings_page']['fanpage_caption']
+    feedback_caption=language_data[language]['settings_page']['feedback_caption']
+    back_caption=language_data[language]['settings_page']['back_caption']
+    version_caption=language_data[language]['general_setting_page']['version_caption']
 
 
     begin_html = """
@@ -3831,7 +3840,7 @@ def SettingPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -4201,15 +4210,15 @@ def SaveTransactionPage(user_id, transactionType, transactionID, transactionValu
         transactionID = request.form['transactionID']
         transactionValue = request.form['transactionValue'].replace("#","&")
 
-    print "SaveTransactionPage:user_id:"+user_id
-    print "SaveTransactionPage:transactionType:"+transactionType
-    print "SaveTransactionPage:transactionID:"+transactionID
+    print("SaveTransactionPage:user_id:"+user_id)
+    print("SaveTransactionPage:transactionType:"+transactionType)
+    print("SaveTransactionPage:transactionID:"+transactionID)
 
     if (transactionType == "repeat"):
         #string already encoded oto utf-8, no need to encode
-        print "SaveTransactionPage:transactionValue:"+transactionValue
+        print("SaveTransactionPage:transactionValue:"+transactionValue)
     else:
-        print "SaveTransactionPage:transactionValue:"+transactionValue.encode('utf-8')
+        print("SaveTransactionPage:transactionValue:"+transactionValue)
 
 
 
@@ -4487,12 +4496,12 @@ def DeleteTransactionPage(user_id, transactionType, transactionID, transactionVa
         transactionValue = request.form['transactionValue'].replace("#","&")
 
     
-    print "DeleteTransactionPage:user_id:"+user_id
-    print "DeleteTransactionPage:transactionType:"+transactionType
-    print "DeleteTransactionPage:transactionID:"+transactionID
-    print "DeleteTransactionPage:transactionValue:"+transactionValue.encode('utf-8')
-    print "DeleteTransactionPage:jarOption:"+jarOption
-    print "DeleteTransactionPage:date:"+date
+    print("DeleteTransactionPage:user_id:"+user_id)
+    print("DeleteTransactionPage:transactionType:"+transactionType)
+    print("DeleteTransactionPage:transactionID:"+transactionID)
+    print("DeleteTransactionPage:transactionValue:"+transactionValue)
+    print("DeleteTransactionPage:jarOption:"+jarOption)
+    print("DeleteTransactionPage:date:"+date)
 
     if ((transactionType == 'recurring-delete') or (transactionType == 'recurring-update')):
         SaveTransactionPage(user_id, 'recurring-delete', transactionID, transactionValue)
@@ -4519,12 +4528,12 @@ def UpdateTransactionPage(user_id):
     jarOption = request.form['jarOption']
     date = request.form['date']
     
-    print "UpdateTransactionPage:user_id:"+user_id
-    print "UpdateTransactionPage:transactionType:"+transactionType
-    print "UpdateTransactionPage:oldTransactionID:"+oldTransactionID
-    print "UpdateTransactionPage:oldTransactionValue:"+oldTransactionValue.encode('utf-8')
-    print "UpdateTransactionPage:newTransactionID:"+newTransactionID
-    print "UpdateTransactionPage:newTransactionValue:"+newTransactionValue.encode('utf-8')
+    print("UpdateTransactionPage:user_id:"+user_id)
+    print("UpdateTransactionPage:transactionType:"+transactionType)
+    print("UpdateTransactionPage:oldTransactionID:"+oldTransactionID)
+    print("UpdateTransactionPage:oldTransactionValue:"+oldTransactionValue)
+    print("UpdateTransactionPage:newTransactionID:"+newTransactionID)
+    print("UpdateTransactionPage:newTransactionValue:"+newTransactionValue)
 
     DeleteTransactionPage(user_id, transactionType, oldTransactionID, oldTransactionValue, jarOption, date)
 
@@ -4539,7 +4548,7 @@ def UpdateTransactionPage(user_id):
 @app.route('/RecurringTransactionPage/<user_id>', methods=['POST'])
 def RecurringTransactionPage(user_id):
     
-    print "RecurringTransactionPage:user_id:"+user_id
+    print("RecurringTransactionPage:user_id:"+user_id)
 
     table_begin = """
         <table>
@@ -4556,28 +4565,29 @@ def RecurringTransactionPage(user_id):
                         'currency',
                         'language')
     
-    currency = user_dict[0]
-    language = user_dict[1]
+    currency = user_dict[0].decode('UTF-8')
+    language = user_dict[1].decode('UTF-8')
 
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
     #load currency json file
-    with open('static/currency.json') as f:
+    with open('static/currency.json','rb') as f:
         currency_data = json.load(f)
 
-    title_caption=language_data[language]['recurring_transaction_page']['title_caption'].encode('utf-8')
-    all_caption=language_data[language]['history_page']['all_caption'].encode('utf-8')
-    nec_caption=language_data[language]['history_page']['nec_caption'].encode('utf-8')
-    edu_caption=language_data[language]['history_page']['edu_caption'].encode('utf-8')
-    lts_caption=language_data[language]['history_page']['lts_caption'].encode('utf-8')
-    ply_caption=language_data[language]['history_page']['ply_caption'].encode('utf-8')
-    ffa_caption=language_data[language]['history_page']['ffa_caption'].encode('utf-8')
-    giv_caption=language_data[language]['history_page']['giv_caption'].encode('utf-8')
-    back_caption=language_data[language]['recurring_transaction_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['recurring_transaction_page']['title_caption']
+    all_caption=language_data[language]['history_page']['all_caption']
+    nec_caption=language_data[language]['history_page']['nec_caption']
+    edu_caption=language_data[language]['history_page']['edu_caption']
+    lts_caption=language_data[language]['history_page']['lts_caption']
+    ply_caption=language_data[language]['history_page']['ply_caption']
+    ffa_caption=language_data[language]['history_page']['ffa_caption']
+    giv_caption=language_data[language]['history_page']['giv_caption']
+    back_caption=language_data[language]['recurring_transaction_page']['back_caption']
 
+    currency_sign = CURRENCY_VND
 
     for i in range(0,len(currency_data['currency'])):
         currency_code = currency_data['currency'][i]['currency_code']
@@ -4587,12 +4597,12 @@ def RecurringTransactionPage(user_id):
 
     for key in sorted(r.hscan_iter(user_id, match='*repeat'), reverse=False):
 
-        transactionID = key[0]
-        transactionValue = key[1].replace("&","#")
+        transactionID = key[0].decode('UTF-8')
+        transactionValue = key[1].decode('UTF-8').replace("&","#")
 
 
-        key0 = key[0].split('-')
-        key1 = key[1].split('-')
+        key0 = key[0].decode('UTF-8').split('-')
+        key1 = key[1].decode('UTF-8').split('-')
         
 
         year = key0[0]
@@ -4687,7 +4697,6 @@ def RecurringTransactionPage(user_id):
     function deleteTransaction(user_id, transactionType, transactionID, transactionValue) {
 
         if (confirm("Are you sure to delete this transaction ?")) {
-
     
             var waiting = document.getElementById('waiting');
             waiting.style.display="block";
@@ -4761,7 +4770,7 @@ def RecurringTransactionPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -4970,7 +4979,7 @@ def RecurringTransactionPage(user_id):
 @app.route('/JarSettingPage/<user_id>', methods=['POST'])
 def JarSettingPage(user_id):
     
-    print "JarSettingPage:user_id:"+user_id
+    print("JarSettingPage:user_id:"+user_id)
 
     user_dict = r.hmget(user_id,
                         'nec_pct',
@@ -4981,23 +4990,23 @@ def JarSettingPage(user_id):
                         'giv_pct',
                         'language')
 
-    language = user_dict[6]
+    language = user_dict[6].decode('UTF-8')
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
 
-    title_caption=language_data[language]['jar_setting_page']['title_caption'].encode('utf-8')
-    total_caption=language_data[language]['jar_setting_page']['total_caption'].encode('utf-8')
-    nec_caption=language_data[language]['jar_setting_page']['nec_caption'].encode('utf-8')
-    edu_caption=language_data[language]['jar_setting_page']['edu_caption'].encode('utf-8')
-    lts_caption=language_data[language]['jar_setting_page']['lts_caption'].encode('utf-8')
-    ply_caption=language_data[language]['jar_setting_page']['ply_caption'].encode('utf-8')
-    ffa_caption=language_data[language]['jar_setting_page']['ffa_caption'].encode('utf-8')
-    giv_caption=language_data[language]['jar_setting_page']['giv_caption'].encode('utf-8')
-    save_caption=language_data[language]['jar_setting_page']['save_caption'].encode('utf-8')
-    back_caption=language_data[language]['jar_setting_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['jar_setting_page']['title_caption']
+    total_caption=language_data[language]['jar_setting_page']['total_caption']
+    nec_caption=language_data[language]['jar_setting_page']['nec_caption']
+    edu_caption=language_data[language]['jar_setting_page']['edu_caption']
+    lts_caption=language_data[language]['jar_setting_page']['lts_caption']
+    ply_caption=language_data[language]['jar_setting_page']['ply_caption']
+    ffa_caption=language_data[language]['jar_setting_page']['ffa_caption']
+    giv_caption=language_data[language]['jar_setting_page']['giv_caption']
+    save_caption=language_data[language]['jar_setting_page']['save_caption']
+    back_caption=language_data[language]['jar_setting_page']['back_caption']
 
     nec_pct = int(user_dict[0])
     edu_pct = int(user_dict[1])
@@ -5198,7 +5207,7 @@ def JarSettingPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -5590,13 +5599,13 @@ def SaveJarSettingPage(user_id):
 
 
 
-    print "SaveJarsSetting:user_id:"+user_id
-    print "SaveJarsSetting:nec_pct:"+nec_pct
-    print "SaveJarsSetting:edu_pct:"+edu_pct
-    print "SaveJarsSetting:lts_pct:"+lts_pct
-    print "SaveJarsSetting:ply_pct:"+ply_pct
-    print "SaveJarsSetting:ffa_pct:"+ffa_pct
-    print "SaveJarsSetting:giv_pct:"+giv_pct
+    print("SaveJarsSetting:user_id:"+user_id)
+    print("SaveJarsSetting:nec_pct:"+nec_pct)
+    print("SaveJarsSetting:edu_pct:"+edu_pct)
+    print("SaveJarsSetting:lts_pct:"+lts_pct)
+    print("SaveJarsSetting:ply_pct:"+ply_pct)
+    print("SaveJarsSetting:ffa_pct:"+ffa_pct)
+    print("SaveJarsSetting:giv_pct:"+giv_pct)
 
     r.hmset(user_id,{
             'nec_pct':nec_pct,
@@ -5614,21 +5623,21 @@ def SaveJarSettingPage(user_id):
 @app.route('/GeneralSettingPage/<user_id>', methods=['POST'])
 def GeneralSettingPage(user_id):
     
-    print "GeneralSettingPage:user_id:"+user_id
+    print("GeneralSettingPage:user_id:"+user_id)
 
-    language = r.hget(user_id,'language')
+    language = r.hget(user_id,'language').decode('UTF-8')
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
 
-    title_caption=language_data[language]['general_setting_page']['title_caption'].encode('utf-8')
-    language_caption=language_data[language]['general_setting_page']['language_caption'].encode('utf-8')
-    currency_caption=language_data[language]['general_setting_page']['currency_caption'].encode('utf-8')
-    factory_reset_caption=language_data[language]['general_setting_page']['factory_reset_caption'].encode('utf-8')
-    version_caption=language_data[language]['general_setting_page']['version_caption'].encode('utf-8')
-    back_caption=language_data[language]['general_setting_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['general_setting_page']['title_caption']
+    language_caption=language_data[language]['general_setting_page']['language_caption']
+    currency_caption=language_data[language]['general_setting_page']['currency_caption']
+    factory_reset_caption=language_data[language]['general_setting_page']['factory_reset_caption']
+    version_caption=language_data[language]['general_setting_page']['version_caption']
+    back_caption=language_data[language]['general_setting_page']['back_caption']
 
     begin_html = """
     <!DOCTYPE html>
@@ -5637,7 +5646,7 @@ def GeneralSettingPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -5951,18 +5960,18 @@ def GeneralSettingPage(user_id):
 @app.route('/LanguageSettingPage/<user_id>', methods=['POST'])
 def LanguageSettingPage(user_id):
     
-    language = r.hget(user_id,'language')
+    language = r.hget(user_id,'language').decode('UTF-8')
 
-    print "LanguageSettingPage:user_id"+user_id
-    print "LanguageSettingPage:"+language
+    print("LanguageSettingPage:user_id"+user_id)
+    print("LanguageSettingPage:"+language)
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
-    title_caption=language_data[language]['language_page']['title_caption'].encode('utf-8')
-    save_caption=language_data[language]['language_page']['save_caption'].encode('utf-8')
-    back_caption=language_data[language]['language_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['language_page']['title_caption']
+    save_caption=language_data[language]['language_page']['save_caption']
+    back_caption=language_data[language]['language_page']['back_caption']
 
 
     initValue = """
@@ -6034,7 +6043,7 @@ def LanguageSettingPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -6313,8 +6322,8 @@ def SaveLanguagePage(user_id):
     
     language = request.form['language']
    
-    print "SaveLanguagePage:user_id"+user_id
-    print "SaveLanguagePage:"+language
+    print("SaveLanguagePage:user_id"+user_id)
+    print("SaveLanguagePage:"+language)
     
     r.hset(user_id, 'language', language) 
 
@@ -6324,7 +6333,7 @@ def SaveLanguagePage(user_id):
 @app.route('/CurrencySettingPage/<user_id>', methods=['POST'])
 def CurrencySettingPage(user_id):
     
-    print "CurrencySettingPage:user_id:"+user_id
+    print("CurrencySettingPage:user_id:"+user_id)
 
     table_begin = """
         <table>
@@ -6341,20 +6350,20 @@ def CurrencySettingPage(user_id):
                         'currency',
                         'language')
     
-    currency = user_dict[0]
-    language = user_dict[1]
+    currency = user_dict[0].decode('UTF-8')
+    language = user_dict[1].decode('UTF-8')
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
     #load currency json file
-    with open('static/currency.json') as f:
+    with open('static/currency.json','rb') as f:
         currency_data = json.load(f)
 
-    title_caption=language_data[language]['currency_page']['title_caption'].encode('utf-8')
-    save_caption=language_data[language]['currency_page']['save_caption'].encode('utf-8')
-    back_caption=language_data[language]['currency_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['currency_page']['title_caption']
+    save_caption=language_data[language]['currency_page']['save_caption']
+    back_caption=language_data[language]['currency_page']['back_caption']
 
     for i in range(0,len(currency_data['currency'])):
 
@@ -6444,7 +6453,7 @@ def CurrencySettingPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -6689,8 +6698,8 @@ def SaveCurrencyPage(user_id):
     
     currency = request.form['currency']
    
-    print "SaveCurrencyPage:user_id"+user_id
-    print "SaveCurrencyPage:"+currency
+    print("SaveCurrencyPage:user_id"+user_id)
+    print("SaveCurrencyPage:"+currency)
     
     r.hset(user_id, 'currency', currency) 
 
@@ -6700,27 +6709,27 @@ def SaveCurrencyPage(user_id):
 @app.route('/FactoryResetPage/<user_id>', methods=['POST'])
 def FactoryResetPage(user_id):
     
-    print "FactoryResetPage:user_id:"+user_id
+    print("FactoryResetPage:user_id:"+user_id)
 
     user_dict = r.hmget(user_id,
                             'language',
                             'user_email',
                             'user_login')
 
-    language = user_dict[0]
-    user_email = user_dict[1]
-    user_login = user_dict[2]
+    language = user_dict[0].decode('UTF-8')
+    user_email = user_dict[1].decode('UTF-8')
+    user_login = user_dict[2].decode('UTF-8')
 
     #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
-    title_caption=language_data[language]['factory_reset_page']['title_caption'].encode('utf-8')
-    note_caption=language_data[language]['factory_reset_page']['note_caption'].encode('utf-8')
-    step1_caption=language_data[language]['factory_reset_page']['step1_caption'].encode('utf-8')
-    step2_caption=language_data[language]['factory_reset_page']['step2_caption'].encode('utf-8')
-    reset_caption=language_data[language]['factory_reset_page']['reset_caption'].encode('utf-8')
-    back_caption=language_data[language]['factory_reset_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['factory_reset_page']['title_caption']
+    note_caption=language_data[language]['factory_reset_page']['note_caption']
+    step1_caption=language_data[language]['factory_reset_page']['step1_caption']
+    step2_caption=language_data[language]['factory_reset_page']['step2_caption']
+    reset_caption=language_data[language]['factory_reset_page']['reset_caption']
+    back_caption=language_data[language]['factory_reset_page']['back_caption']
 
 
     back = """
@@ -6801,7 +6810,7 @@ def FactoryResetPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -6986,7 +6995,7 @@ def FactoryResetPage(user_id):
 @app.route('/ResetConfirmPage/<user_id>', methods=['POST'])
 def ResetConfirmPage(user_id):
     
-    print "ResetConfirmPage:user_id:"+user_id
+    print("ResetConfirmPage:user_id:"+user_id)
 
     r.delete(user_id)
     
@@ -7000,10 +7009,10 @@ def SelectJarPage(user_id):
     jar = request.form['jar']
     date = request.form['date']
     
-    print "SelectJarPage:user_id:"+user_id
-    print "SelectJarPage:sender_id:"+sender_id
-    print "SelectJarPage:jar:"+jar
-    print "SelectJarPage:date:"+date
+    print("SelectJarPage:user_id:"+user_id)
+    print("SelectJarPage:sender_id:"+sender_id)
+    print("SelectJarPage:jar:"+jar)
+    print("SelectJarPage:date:"+date)
     
     user_dict = r.hmget(user_id,
                         'nec_income',
@@ -7030,28 +7039,30 @@ def SelectJarPage(user_id):
                         'pre_balance',
                         'language')
 
-    currency = user_dict[18]
-    language = user_dict[22]
+    currency = user_dict[18].decode('UTF-8')
+    language = user_dict[22].decode('UTF-8')
 
 
    #load language json file
-    with open('static/language.json') as f:
+    with open('static/language.json','rb') as f:
         language_data = json.load(f)
 
     #load currency json file
-    with open('static/currency.json') as f:
+    with open('static/currency.json','rb') as f:
         currency_data = json.load(f)
 
 
-    title_caption=language_data[language]['select_jar_page']['title_caption'].encode('utf-8')
-    all_caption=language_data[language]['select_jar_page']['all_caption'].encode('utf-8')
-    nec_caption=language_data[language]['select_jar_page']['nec_caption'].encode('utf-8')
-    edu_caption=language_data[language]['select_jar_page']['edu_caption'].encode('utf-8')
-    lts_caption=language_data[language]['select_jar_page']['lts_caption'].encode('utf-8')
-    ply_caption=language_data[language]['select_jar_page']['ply_caption'].encode('utf-8')
-    ffa_caption=language_data[language]['select_jar_page']['ffa_caption'].encode('utf-8')
-    giv_caption=language_data[language]['select_jar_page']['giv_caption'].encode('utf-8')
-    back_caption=language_data[language]['select_jar_page']['back_caption'].encode('utf-8')
+    title_caption=language_data[language]['select_jar_page']['title_caption']
+    all_caption=language_data[language]['select_jar_page']['all_caption']
+    nec_caption=language_data[language]['select_jar_page']['nec_caption']
+    edu_caption=language_data[language]['select_jar_page']['edu_caption']
+    lts_caption=language_data[language]['select_jar_page']['lts_caption']
+    ply_caption=language_data[language]['select_jar_page']['ply_caption']
+    ffa_caption=language_data[language]['select_jar_page']['ffa_caption']
+    giv_caption=language_data[language]['select_jar_page']['giv_caption']
+    back_caption=language_data[language]['select_jar_page']['back_caption']
+
+    currency_sign = CURRENCY_VND
 
     for i in range(0,len(currency_data['currency'])):
         currency_code = currency_data['currency'][i]['currency_code']
@@ -7134,7 +7145,7 @@ def SelectJarPage(user_id):
         <title>MoneyOi</title>
         <meta charset="utf-8">
         <meta name="description" content="MoneyOi Cloud Native Application">
-        <meta name="author" content="moneyoi.herokuapp.com">
+        <meta name="author" content="thangndu">
         <meta name="keywords" content="moneyoi,free,6,six,jar,jars,app,money,method,management,cloud,native,application">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
