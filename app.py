@@ -846,7 +846,7 @@ def HomePage(user_id, today):
     signOut_function = """
     function signOut() {
 
-        document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://moneyoi.appspot.com";
+        document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://moneyoi.herokuapp.com";
 
     };
         """
@@ -858,7 +858,7 @@ def HomePage(user_id, today):
             FB.logout(function(response) {
                 // Logout and redirect to the home page
 
-                document.location.href = "https://moneyoi.appspot.com";
+                document.location.href = "https://moneyoi.herokuapp.com";
                     
             });
            
